@@ -28,7 +28,6 @@ export default class AuthController {
 
   @Post("/register")
   async register(@Body() registerDto: RegisterDto) {
-    console.log(registerDto);
     const result = await this.authService.register(registerDto);
     return new SuccessResponse(result.getValue());
   }

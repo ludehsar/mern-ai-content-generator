@@ -7,6 +7,7 @@ import config from "./config";
 import AuthController from "./server/auth/AuthController";
 import passport from "passport";
 import { jwtStrategy } from "./strategies/jwt.strategy";
+import cors from "cors";
 
 export default class App {
   public app: express.Application;
@@ -15,6 +16,7 @@ export default class App {
   constructor() {
     this.app = express();
     this.app.use(logger("dev"));
+    this.app.use(cors());
 
     passport.use(jwtStrategy);
 
