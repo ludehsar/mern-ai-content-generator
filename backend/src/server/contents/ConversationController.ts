@@ -43,6 +43,15 @@ export default class ConversationController {
     return new SuccessResponse(result.getValue());
   }
 
+  @Get("/conversations/:conversationId")
+  @UseBefore(JWTMiddleware)
+  async getConversation(@Param("conversationId") conversationId: string) {
+    const result = await this.conversationService.getConversation(
+      conversationId
+    );
+    return new SuccessResponse(result.getValue());
+  }
+
   @Get("/content/:jobId/status")
   async getContentStatus(@Param("jobId") jobId: string) {
     const result = await this.conversationService.getContentGenerationJobStatus(
