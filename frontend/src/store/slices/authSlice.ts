@@ -1,8 +1,8 @@
-import type { LoginDto } from "@/types/auth";
+import type { LoginDto, User } from "@/types/auth";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = {
-  user: null,
+  user: null as User | null,
   error: null,
   status: "idle",
 };
