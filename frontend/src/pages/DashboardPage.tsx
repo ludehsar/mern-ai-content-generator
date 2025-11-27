@@ -4,9 +4,12 @@ import type { RootState } from "@/store";
 import type { User } from "@/types/auth";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchConversations } from "@/store/slices/conversationSlice";
+import { logoutUser } from "@/store/slices/authSlice";
 import type { Conversation } from "@/types/conversation";
 import PromptBox from "@/components/dashboard/PromptBox";
 import ConversationsList from "@/components/dashboard/ConversationsList";
+import { Button } from "@/components/ui/button";
+import { LogOut } from "lucide-react";
 
 export default function DashboardPage() {
   const navigate = useNavigate();
@@ -38,11 +41,30 @@ export default function DashboardPage() {
     }
   }, [generateStatus, currentConversation, navigate]);
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    dispatch(logoutUser());
+    navigate("/login");
+  };
+
   return (
     <div className="flex min-h-svh flex-col gap-6 bg-muted p-6 md:p-10">
       <div className="mx-auto w-full max-w-4xl">
-        <h1 className="mb-6 text-2xl font-bold">AI Content Generation</h1>
-        <p className="mb-6 text-muted-foreground">Welcome, {user?.name}</p>
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold">AI Content Generation</h1>
+            <p className="mt-2 text-muted-foreground">Welcome, {user?.name}</p>
+          </div>
+          <Button
+            onClick={handleLogout}
+            variant="outline"
+            size="sm"
+            className="gap-2"
+          >
+            <LogOut className="size-4" />
+            Logout
+          </Button>
+        </div>
 
         <PromptBox />
 

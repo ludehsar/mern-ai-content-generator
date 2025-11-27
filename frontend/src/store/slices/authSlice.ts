@@ -35,6 +35,11 @@ const authSlice = createSlice({
       state.error = action.payload;
       state.status = "failed";
     },
+    logoutUser(state) {
+      state.user = null;
+      state.error = null;
+      state.status = "idle";
+    },
   },
 });
 
@@ -44,6 +49,7 @@ export const {
   loginUserFailure,
   registerUser,
   getUser,
+  logoutUser,
 } = authSlice.actions;
 
 export default authSlice.reducer;
