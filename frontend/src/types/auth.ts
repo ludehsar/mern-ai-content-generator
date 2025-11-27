@@ -10,7 +10,7 @@ export interface RegisterDto {
   password: string;
 }
 
-export interface RegisterResponse {
+export interface UserResponse {
   user: User;
 }
 

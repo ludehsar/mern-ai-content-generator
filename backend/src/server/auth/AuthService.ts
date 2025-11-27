@@ -2,7 +2,7 @@ import { IAuthService } from "./IAuthService";
 import { Result } from "../../models/Result";
 import { Service } from "typedi";
 import ValidationExceptions from "../../constants/RuntimeExceptions";
-import User from "../user/models/User";
+import User, { IUser } from "../user/models/User";
 import RegisterDto from "./models/RegisterDto";
 import * as jwt from "jsonwebtoken";
 import config from "../../config";
@@ -23,24 +23,13 @@ export class AuthService implements IAuthService {
     if (!isPasswordValid) {
       return Result.failure(ValidationExceptions.INVALID_PASSWORD);
     }
-    const token = jwt.sign(
-      {
-        userDto: {
-          userId: user._id.toString(),
-          username: user.username,
-          name: user.name,
-        },
-      },
-      config.jwtSecret,
-      { expiresIn: "24h" }
-    );
     const { _id, hashedPassword, ...userWithoutPassword } = user.toObject();
     return Result.succesful({
       user: {
         _id: _id.toString(),
         ...userWithoutPassword,
       },
-      token,
+      token: this.generateToken(user),
     });
   };
 
@@ -66,6 +55,7 @@ export class AuthService implements IAuthService {
         _id: _id.toString(),
         ...userWithoutPassword,
       },
+      token: this.generateToken(user),
     });
   };
 
@@ -75,5 +65,19 @@ export class AuthService implements IAuthService {
       throw ValidationExceptions.USER_NOT_FOUND;
     }
     return Result.succesful({ user });
+  };
+
+  private generateToken = (user: IUser): string => {
+    return jwt.sign(
+      {
+        userDto: {
+          userId: user._id.toString(),
+          username: user.username,
+          name: user.name,
+        },
+      },
+      config.jwtSecret,
+      { expiresIn: "24h" }
+    );
   };
 }

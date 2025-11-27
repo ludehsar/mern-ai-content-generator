@@ -1,10 +1,10 @@
-import type { LoginDto, User } from "@/types/auth";
+import type { LoginDto, RegisterDto, User } from "@/types/auth";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = {
   user: null as User | null,
-  error: null,
-  status: "idle",
+  error: null as Error | null,
+  status: "idle" as "idle" | "pending" | "complete" | "failed",
 };
 
 const authSlice = createSlice({
@@ -14,6 +14,16 @@ const authSlice = createSlice({
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     loginUser(state, _action: PayloadAction<LoginDto>) {
       state.status = "pending";
+      state.error = null;
+    },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    registerUser(state, _action: PayloadAction<RegisterDto>) {
+      state.status = "pending";
+      state.error = null;
+    },
+    getUser(state) {
+      state.status = "pending";
+      state.error = null;
     },
     loginUserSuccess(state, action) {
       state.user = action.payload;
@@ -28,7 +38,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { loginUser, loginUserSuccess, loginUserFailure } =
+export const { loginUser, registerUser, loginUserSuccess, loginUserFailure } =
   authSlice.actions;
 
 export default authSlice.reducer;

@@ -12,3 +12,8 @@ export interface ErrorResponse {
   status: string;
   statusCode: number;
 }
+
+export interface TOption {
+  label: string;
+  value: string;
+}
