@@ -6,6 +6,7 @@ import {
   UseBefore,
   Get,
   Param,
+  HttpCode,
 } from "routing-controllers";
 import { Request } from "express";
 import { SuccessResponse } from "../../models/SuccessResponse";
@@ -23,6 +24,7 @@ export default class ConversationController {
 
   @Post("/generate-content")
   @UseBefore(JWTMiddleware)
+  @HttpCode(202)
   async generateContent(
     @Req() request: Request,
     @Body() generateContentDto: CreateConversationDto
