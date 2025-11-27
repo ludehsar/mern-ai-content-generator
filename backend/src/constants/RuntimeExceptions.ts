@@ -16,4 +16,8 @@ export default class ValidationExceptions {
     10005,
     "Conversation messages limit reached. Please create a new topic."
   );
+  static CONTENT_GENERATION_JOB_NOT_FOUND = new CustomError(
+    10006,
+    "Content Generation Job Not Found"
+  );
 }

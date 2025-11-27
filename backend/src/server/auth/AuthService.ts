@@ -8,20 +8,21 @@ import * as jwt from "jsonwebtoken";
 import config from "../../config";
 import LoginDto from "./models/LoginDto";
 import * as bcrypt from "bcrypt";
+import { BadRequestError, NotFoundError } from "routing-controllers";
 
 @Service()
 export class AuthService implements IAuthService {
   login = async (loginDto: LoginDto): Promise<Result> => {
     const user = await User.findOne({ username: loginDto.username });
     if (!user) {
-      return Result.failure(ValidationExceptions.USER_NOT_FOUND);
+      throw new NotFoundError(ValidationExceptions.USER_NOT_FOUND.message);
     }
     const isPasswordValid = await bcrypt.compare(
       loginDto.password,
       user.hashedPassword
     );
     if (!isPasswordValid) {
-      return Result.failure(ValidationExceptions.INVALID_PASSWORD);
+      throw new BadRequestError(ValidationExceptions.INVALID_PASSWORD.message);
     }
     const { hashedPassword, ...userWithoutPassword } = user.toObject();
     return Result.succesful({
@@ -35,7 +36,9 @@ export class AuthService implements IAuthService {
   register = async (registerDto: RegisterDto): Promise<Result> => {
     const existingUser = await User.findOne({ username: registerDto.username });
     if (existingUser) {
-      return Result.failure(ValidationExceptions.USER_ALREADY_REGISTERED);
+      throw new BadRequestError(
+        ValidationExceptions.USER_ALREADY_REGISTERED.message
+      );
     }
     const hashedPassword = await bcrypt.hash(registerDto.password, 10);
     const user = new User({
@@ -57,7 +60,7 @@ export class AuthService implements IAuthService {
   getUser = async (userId: string): Promise<Result> => {
     const user = await User.findById(userId);
     if (!user) {
-      throw ValidationExceptions.USER_NOT_FOUND;
+      throw new NotFoundError(ValidationExceptions.USER_NOT_FOUND.message);
     }
     return Result.succesful({ user });
   };
