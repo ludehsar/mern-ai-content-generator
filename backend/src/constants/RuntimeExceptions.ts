@@ -6,4 +6,5 @@ export default class ValidationExceptions {
     10001,
     "User Already Registered!"
   );
+  static INVALID_PASSWORD = new CustomError(10002, "Invalid Password");
 }

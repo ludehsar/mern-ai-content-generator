@@ -4,6 +4,9 @@ import logger from "morgan";
 import { useExpressServer } from "routing-controllers";
 import { CustomErrorHandler } from "./middlewares/CustomErrorHandler";
 import config from "./config";
+import AuthController from "./server/auth/AuthController";
+import passport from "passport";
+import { jwtStrategy } from "./strategies/jwt.strategy";
 
 export default class App {
   public app: express.Application;
@@ -13,17 +16,15 @@ export default class App {
     this.app = express();
     this.app.use(logger("dev"));
 
+    passport.use(jwtStrategy);
+
     useExpressServer(this.app, {
       routePrefix: "/api/v1",
       defaultErrorHandler: false,
       classTransformer: true,
       validation: { skipMissingProperties: true },
-      // validation : true,
-      // controllers: [UserController],
+      controllers: [AuthController],
       middlewares: [CustomErrorHandler],
-      // controllerDirs: [__dirname + "/controller/**/*.controller.js"],
-      // middlewareDirs: [__dirname + "/middleware/**/*.middleware.js"],
-      // interceptorDirs: [__dirname + "/interceptor/**/*.interceptor.js"]
     });
   }
 

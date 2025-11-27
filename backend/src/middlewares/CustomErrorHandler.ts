@@ -25,7 +25,7 @@ export class CustomErrorHandler implements ExpressErrorMiddlewareInterface {
 
       response.status(403).json(new ErrorResponse(403, 1234, message));
     } else {
-      const status = error.status || 500;
+      const status = error.status || error.httpCode || 500;
       const errorCode = error.errorCode || ErrorCodes.DATABASE_ERROR;
       const message = error.message || "Something went wrong";
       const rawErrors = error.errors;
