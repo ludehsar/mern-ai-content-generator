@@ -13,7 +13,8 @@ export const registerUser = async (registerDto: RegisterDto) => {
       "/auth/register",
       registerDto
     );
-    return response.data;
+    localStorage.setItem("token", response.data.data.token);
+    return response.data.data.user;
   } catch (error) {
     console.error(error);
     throw new Error("An error occurred during login");
