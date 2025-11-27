@@ -1,0 +1,9 @@
+[[services]]
+name = "api"
+dockerfile = "Dockerfile"
+startCommand = "node build/index.js"
+
+[[services]]
+name = "worker"
+dockerfile = "Dockerfile"
+startCommand = "node build/worker.js"
