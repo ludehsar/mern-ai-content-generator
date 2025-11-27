@@ -3,7 +3,10 @@ import { useNavigate } from "react-router";
 import type { RootState } from "@/store";
 import type { User } from "@/types/auth";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchConversations } from "@/store/slices/conversationSlice";
+import {
+  fetchConversations,
+  clearPollingState,
+} from "@/store/slices/conversationSlice";
 import { logoutUser } from "@/store/slices/authSlice";
 import type { Conversation } from "@/types/conversation";
 import PromptBox from "@/components/dashboard/PromptBox";
@@ -37,9 +40,11 @@ export default function DashboardPage() {
       currentConversation &&
       currentConversation._id
     ) {
-      navigate(`/conversations/${currentConversation._id}`);
+      const conversationId = currentConversation._id;
+      dispatch(clearPollingState());
+      navigate(`/conversations/${conversationId}`, { replace: false });
     }
-  }, [generateStatus, currentConversation, navigate]);
+  }, [generateStatus, currentConversation, navigate, dispatch]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");

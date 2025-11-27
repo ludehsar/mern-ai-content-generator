@@ -5,6 +5,8 @@ import type { RootState } from "@/store";
 import { fetchConversation } from "@/store/slices/conversationSlice";
 import type { Conversation, Message } from "@/types/conversation";
 import ReactMarkdown from "react-markdown";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 
 export default function ConversationDetailPage() {
   const { conversationId } = useParams<{ conversationId: string }>();
@@ -19,6 +21,14 @@ export default function ConversationDetailPage() {
       dispatch(fetchConversation(conversationId));
     }
   }, [conversationId, dispatch]);
+
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate("/dashboard");
+    }
+  };
 
   if (!currentConversation) {
     return (
@@ -37,12 +47,16 @@ export default function ConversationDetailPage() {
     <div className="flex min-h-svh flex-col gap-6 bg-muted p-6 md:p-10">
       <div className="mx-auto w-full max-w-4xl">
         <div className="mb-6 flex items-center gap-4">
-          <button
-            onClick={() => navigate("/dashboard")}
-            className="text-muted-foreground hover:text-foreground"
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={handleBack}
+            className="gap-2"
           >
-            ← Back
-          </button>
+            <ArrowLeft className="size-4" />
+            Back
+          </Button>
           <h1 className="text-2xl font-bold">{currentConversation.title}</h1>
         </div>
 

@@ -82,6 +82,13 @@ const conversationSlice = createSlice({
       state.error = action.payload;
       state.status = "failed";
     },
+    clearPollingState(state) {
+      state.currentConversation = null;
+      state.jobStatus = null;
+      state.pollingJobId = null;
+      state.generateStatus = "idle";
+      state.error = null;
+    },
   },
 });
 
@@ -98,6 +105,7 @@ export const {
   fetchConversation,
   fetchConversationSuccess,
   fetchConversationFailure,
+  clearPollingState,
 } = conversationSlice.actions;
 
 export default conversationSlice.reducer;

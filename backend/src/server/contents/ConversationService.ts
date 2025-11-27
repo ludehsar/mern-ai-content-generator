@@ -46,7 +46,9 @@ export class ConversationService implements IConversationService {
   ) => {
     const conversation = new Conversation({
       userId: contentGenerationJobData.userId,
-      title: "Untitled Conversation",
+      title:
+        contentGenerationJobData.prompt.slice(0, 50) +
+        (contentGenerationJobData.prompt.length > 50 ? "..." : ""),
       contentType: contentGenerationJobData.contentType,
       messages: [
         {
