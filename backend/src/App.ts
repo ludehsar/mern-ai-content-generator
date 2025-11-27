@@ -8,6 +8,7 @@ import AuthController from "./server/auth/AuthController";
 import passport from "passport";
 import { jwtStrategy } from "./strategies/jwt.strategy";
 import cors from "cors";
+import ConversationController from "./server/contents/ConversationController";
 
 export default class App {
   public app: express.Application;
@@ -25,7 +26,7 @@ export default class App {
       defaultErrorHandler: false,
       classTransformer: true,
       validation: { skipMissingProperties: true },
-      controllers: [AuthController],
+      controllers: [AuthController, ConversationController],
       middlewares: [CustomErrorHandler],
     });
   }

@@ -26,7 +26,7 @@ export class Result {
     return new Result(
       true,
       new CustomError(200, "No Exception Occured"),
-      value
+      JSON.parse(JSON.stringify(value))
     );
   }
 

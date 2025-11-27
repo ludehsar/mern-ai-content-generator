@@ -7,4 +7,13 @@ export default class ValidationExceptions {
     "User Already Registered!"
   );
   static INVALID_PASSWORD = new CustomError(10002, "Invalid Password");
+  static CONVERSATION_NOT_FOUND = new CustomError(
+    10003,
+    "Conversation Not Found"
+  );
+  static USER_NOT_AUTHORIZED = new CustomError(10004, "User Not Authorized");
+  static CONVERSATION_MAX_MESSAGES_LIMIT_REACHED = new CustomError(
+    10005,
+    "Conversation messages limit reached. Please create a new topic."
+  );
 }

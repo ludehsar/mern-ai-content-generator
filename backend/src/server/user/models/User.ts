@@ -6,7 +6,7 @@ export interface IUser extends Document {
   hashedPassword: string;
 }
 
-const UserSchema: Schema = new Schema(
+export const UserSchema: Schema = new Schema(
   {
     name: { type: String, required: true },
     username: { type: String, required: true, unique: true },

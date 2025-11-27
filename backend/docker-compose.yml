@@ -1,0 +1,28 @@
+services:
+  redis:
+    image: "redis:alpine"
+    restart: always
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - "mern-ai-assistant-redis:/data"
+    networks:
+      - mern-ai-assistant
+    healthcheck:
+      test:
+        - CMD
+        - redis-cli
+        - ping
+      retries: 3
+      timeout: 5s
+
+networks:
+  mern-ai-assistant:
+    driver: bridge
+
+volumes:
+  mern-ai-assistant-redis:
+    driver: local

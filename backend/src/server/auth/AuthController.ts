@@ -35,12 +35,11 @@ export default class AuthController {
   @Get("/me")
   @UseBefore(JWTMiddleware)
   async me(@Req() request: Request) {
-    const { _id, hashedPassword, ...userWithoutPassword } = (
+    const { hashedPassword, ...userWithoutPassword } = (
       request.user as IUser
     ).toObject();
     return new SuccessResponse({
       user: {
-        _id: _id.toString(),
         ...userWithoutPassword,
       },
     });

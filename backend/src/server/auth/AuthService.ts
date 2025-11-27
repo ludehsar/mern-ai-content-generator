@@ -23,10 +23,9 @@ export class AuthService implements IAuthService {
     if (!isPasswordValid) {
       return Result.failure(ValidationExceptions.INVALID_PASSWORD);
     }
-    const { _id, hashedPassword, ...userWithoutPassword } = user.toObject();
+    const { hashedPassword, ...userWithoutPassword } = user.toObject();
     return Result.succesful({
       user: {
-        _id: _id.toString(),
         ...userWithoutPassword,
       },
       token: this.generateToken(user),
@@ -45,14 +44,10 @@ export class AuthService implements IAuthService {
       hashedPassword,
     });
     await user.save();
-    const {
-      _id,
-      hashedPassword: userHashedPassword,
-      ...userWithoutPassword
-    } = user.toObject();
+    const { hashedPassword: userHashedPassword, ...userWithoutPassword } =
+      user.toObject();
     return Result.succesful({
       user: {
-        _id: _id.toString(),
         ...userWithoutPassword,
       },
       token: this.generateToken(user),
